@@ -312,9 +312,10 @@ cmp.setup.cmdline(':', {
 })
 
 -- None-ls setup for formatting and linting
-local none_ls = require('none-ls')
+local none_ls_ok, none_ls = pcall(require, 'none-ls')
 
-none_ls.setup({
+if none_ls_ok then
+  none_ls.setup({
   sources = {
     -- Formatters
     none_ls.builtins.formatting.prettier.with({
@@ -347,12 +348,14 @@ none_ls.setup({
       end,
     }),
   },
-})
+  })
+end
 
 -- Prettier setup
-local prettier = require("prettier")
+local prettier_ok, prettier = pcall(require, "prettier")
 
-prettier.setup({
+if prettier_ok then
+  prettier.setup({
   bin = 'prettier',
   filetypes = {
     "css",
@@ -362,7 +365,8 @@ prettier.setup({
     "markdown",
     "typescript",
   },
-})
+  })
+end
 
 -- Gitsigns setup
 require('gitsigns').setup()

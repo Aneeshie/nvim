@@ -149,10 +149,10 @@ _G.packer_plugins = {
     path = "/Users/zer/.local/share/nvim/site/pack/packer/start/nerdcommenter",
     url = "https://github.com/preservim/nerdcommenter"
   },
-  ["null-ls.nvim"] = {
+  ["none-ls.nvim"] = {
     loaded = true,
-    path = "/Users/zer/.local/share/nvim/site/pack/packer/start/null-ls.nvim",
-    url = "https://github.com/jose-elias-alvarez/null-ls.nvim"
+    path = "/Users/zer/.local/share/nvim/site/pack/packer/start/none-ls.nvim",
+    url = "https://github.com/nvimtools/none-ls.nvim"
   },
   ["nvim-cmp"] = {
     loaded = true,
