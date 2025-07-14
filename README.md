@@ -1,6 +1,6 @@
 # Neovim Configuration
 
-This is a comprehensive Neovim configuration with all the requested features.
+
 
 ## Features
 
