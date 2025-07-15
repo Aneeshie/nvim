@@ -112,8 +112,8 @@ require('packer').startup(function(use)
   -- Indent guides
   use 'lukas-reineke/indent-blankline.nvim'
   
-  -- Bufferline
-  use {'akinsho/bufferline.nvim', tag = "v3.*", requires = 'nvim-tree/nvim-web-devicons'}
+-- Bufferline
+use {'akinsho/bufferline.nvim', tag = "v4.*", requires = 'nvim-tree/nvim-web-devicons'}
   
   if packer_bootstrap then
     require('packer').sync()
@@ -378,20 +378,25 @@ require('lualine').setup {
   }
 }
 
--- Bufferline setup
-local bufferline_ok, bufferline = pcall(require, "bufferline")
-if bufferline_ok then
-  bufferline.setup({
-    options = {
-      mode = "buffers",
-      separator_style = "slant",
-      always_show_bufferline = false,
-      show_buffer_close_icons = false,
-      show_close_icon = false,
-      color_icons = true,
-    }
-  })
-end
+-- Bufferline setup - temporarily disabled due to compatibility issues
+-- local bufferline_ok, bufferline = pcall(require, "bufferline")
+-- if bufferline_ok then
+--   bufferline.setup({
+--     options = {
+--       mode = "buffers",
+--       separator_style = "slant",
+--       always_show_bufferline = false,
+--       show_buffer_close_icons = false,
+--       show_close_icon = false,
+--       color_icons = true,
+--       buffer_close_icon = '',
+--       modified_icon = '●',
+--       close_icon = '',
+--       left_trunc_marker = '',
+--       right_trunc_marker = '',
+--     }
+--   })
+-- end
 
 -- Indent blankline setup (version 3)
 require("ibl").setup {
@@ -414,7 +419,40 @@ require("nvim-tree").setup({
 })
 
 -- Telescope setup
-require('telescope').setup{}
+require('telescope').setup{
+  defaults = {
+    file_ignore_patterns = {
+      "node_modules",
+      ".git/",
+      "dist/",
+      "build/",
+      "*.o",
+      "*.a",
+      "*.out",
+      "*.class",
+      "*.pdf",
+      "*.mkv",
+      "*.mp4",
+      "*.zip"
+    },
+    layout_config = {
+      horizontal = {
+        preview_width = 0.6,
+      },
+    },
+  },
+  pickers = {
+    find_files = {
+      find_command = { "fd", "--type", "f", "--hidden", "--follow" },
+      hidden = true,
+    },
+    live_grep = {
+      additional_args = function(opts)
+        return {"--hidden"}
+      end
+    },
+  },
+}
 
 -- Harpoon setup (v1 API)
 local harpoon_ok, harpoon = pcall(require, "harpoon")
