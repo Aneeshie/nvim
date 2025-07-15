@@ -457,6 +457,10 @@ end
 vim.cmd [[
   augroup FormatAutogroup
     autocmd!
-    autocmd BufWritePost *.js,*.ts,*.html,*.css,*.json,*.py,*.go,*.c,*.cpp,*.lua PrettierAsync
+    autocmd BufWritePost *.js,*.ts,*.html,*.css,*.json Prettier
+    autocmd BufWritePost *.py lua vim.lsp.buf.format()
+    autocmd BufWritePost *.go lua vim.lsp.buf.format()
+    autocmd BufWritePost *.c,*.cpp lua vim.lsp.buf.format()
+    autocmd BufWritePost *.lua lua vim.lsp.buf.format()
   augroup END
 ]]
