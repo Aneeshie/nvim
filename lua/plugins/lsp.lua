@@ -11,6 +11,7 @@ return {
     "L3MON4D3/LuaSnip",
     "saadparwaiz1/cmp_luasnip",
     "j-hui/fidget.nvim",
+    "ray-x/lsp_signature.nvim", -- VSCode-like signature help
   },
   config = function()
     local cmp_lsp = require("cmp_nvim_lsp")
@@ -23,6 +24,35 @@ return {
 
     require("fidget").setup({})
     require("mason").setup()
+    
+    -- Setup signature help plugin
+    require("lsp_signature").setup({
+      bind = true, -- This is mandatory, otherwise border config won't get registered.
+      handler_opts = {
+        border = "rounded"
+      },
+      floating_window = true, -- show hint in a floating window, set to false for virtual text only
+      floating_window_above_cur_line = true, -- try to place the floating above the current line when possible Note:
+      fix_pos = false, -- set to true, the floating window will not auto-close until finish all parameters
+      hint_enable = true, -- virtual hint enable
+      hint_prefix = "🐼 ", -- Panda for parameter
+      hint_scheme = "String",
+      hi_parameter = "LspSignatureActiveParameter", -- how your parameter will be highlight
+      max_height = 12, -- max height of signature floating_window, if content is more than max_height, you can scroll down
+      max_width = 80, -- max_width of signature floating_window
+      transpancy = nil, -- disabled by default, allow floating window to be transparent
+      extra_trigger_chars = {}, -- Array of extra characters that will trigger signature completion, e.g., {"(", ","}
+      zindex = 200, -- by default it will be on top of all floating windows, set to <= 50 send it to bottom
+      debug = false, -- set to true to enable debug logging
+      log_path = vim.fn.stdpath("cache") .. "/lsp_signature.log", -- log dir when debug is on
+      padding = '', -- character to pad on left and right of signature can be ' ', or '|'  etc
+      shadow_blend = 36, -- if you using shadow as border use this set the opacity
+      shadow_guibg = 'Black', -- if you using shadow as border use this set the color e.g. 'Green' or '#121315'
+      timer_interval = 200, -- default timer check interval set to lower value if you want to reduce latency
+      toggle_key = nil, -- toggle signature on and off in insert mode, e.g. '<M-x>'
+      select_signature_key = nil, -- cycle to next signature, e.g. '<M-n>' function overloading
+    })
+    
     require("mason-lspconfig").setup({
       ensure_installed = {
         "lua_ls",
@@ -35,6 +65,15 @@ return {
         function(server_name)
           require("lspconfig")[server_name].setup({
             capabilities = capabilities,
+            on_attach = function(client, bufnr)
+              -- Enable signature help
+              require("lsp_signature").on_attach({
+                bind = true,
+                handler_opts = {
+                  border = "rounded"
+                }
+              }, bufnr)
+            end,
           })
         end,
 
@@ -42,6 +81,14 @@ return {
           local lspconfig = require("lspconfig")
           lspconfig.lua_ls.setup({
             capabilities = capabilities,
+            on_attach = function(client, bufnr)
+              require("lsp_signature").on_attach({
+                bind = true,
+                handler_opts = {
+                  border = "rounded"
+                }
+              }, bufnr)
+            end,
             settings = {
               Lua = {
                 runtime = { version = "Lua 5.1" },
@@ -57,6 +104,14 @@ return {
           local lspconfig = require("lspconfig")
           lspconfig.rust_analyzer.setup({
             capabilities = capabilities,
+            on_attach = function(client, bufnr)
+              require("lsp_signature").on_attach({
+                bind = true,
+                handler_opts = {
+                  border = "rounded"
+                }
+              }, bufnr)
+            end,
             settings = {
               ["rust-analyzer"] = {
                 cargo = {
@@ -74,6 +129,14 @@ return {
           local lspconfig = require("lspconfig")
           lspconfig.gopls.setup({
             capabilities = capabilities,
+            on_attach = function(client, bufnr)
+              require("lsp_signature").on_attach({
+                bind = true,
+                handler_opts = {
+                  border = "rounded"
+                }
+              }, bufnr)
+            end,
             settings = {
               gopls = {
                 gofumpt = true,
@@ -117,6 +180,14 @@ return {
           local lspconfig = require("lspconfig")
           lspconfig.ts_ls.setup({
             capabilities = capabilities,
+            on_attach = function(client, bufnr)
+              require("lsp_signature").on_attach({
+                bind = true,
+                handler_opts = {
+                  border = "rounded"
+                }
+              }, bufnr)
+            end,
             settings = {
               typescript = {
                 inlayHints = {
@@ -148,6 +219,14 @@ return {
           local lspconfig = require("lspconfig")
           lspconfig.clangd.setup({
             capabilities = capabilities,
+            on_attach = function(client, bufnr)
+              require("lsp_signature").on_attach({
+                bind = true,
+                handler_opts = {
+                  border = "rounded"
+                }
+              }, bufnr)
+            end,
             cmd = {
               "clangd",
               "--background-index",
@@ -181,6 +260,9 @@ return {
         ["<C-n>"] = cmp.mapping.select_next_item(cmp_select),
         ["<C-y>"] = cmp.mapping.confirm({ select = true }),
         ["<C-Space>"] = cmp.mapping.complete(),
+        ["<C-k>"] = cmp.mapping(function()
+          vim.lsp.buf.signature_help()
+        end, { "i", "c" }),
       }),
       sources = cmp.config.sources({
         { name = "nvim_lsp" },
