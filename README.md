@@ -141,11 +141,11 @@ A modern, feature-rich Neovim configuration focused on development productivity 
 2. **Installation**: 
    ```bash
    # If using with dotfiles (as configured)
-   git clone <your-dotfiles-repo> ~/.dotfiles
+   git clone git@github.com:Aneeshie/nvim.git ~/.dotfiles
    ln -sf ~/.dotfiles/nvim/.config/nvim ~/.config/nvim
    
    # Or directly
-   git clone <this-config> ~/.config/nvim
+   git clone git@github.com:Aneeshie/nvim.git ~/.config/nvim
    ```
 
 3. **First Launch**: 
