@@ -11,9 +11,9 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   command = ":%s/\\s\\+$//e",
 })
 
--- Auto format on save for supported languages
+-- Auto format on save for supported languages (excluding JS/TS which are handled by conform.nvim)
 vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = { "*.rs", "*.go", "*.ts", "*.js", "*.c", "*.cpp", "*.h", "*.hpp" },
+  pattern = { "*.rs", "*.go", "*.c", "*.cpp", "*.h", "*.hpp" },
   callback = function()
     vim.lsp.buf.format({ async = false })
   end,

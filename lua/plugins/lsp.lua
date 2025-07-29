@@ -12,6 +12,7 @@ return {
     "saadparwaiz1/cmp_luasnip",
     "j-hui/fidget.nvim",
     "ray-x/lsp_signature.nvim", -- VSCode-like signature help
+    "pmizio/typescript-tools.nvim", -- Enhanced TypeScript support with auto-imports
   },
   config = function()
     local cmp_lsp = require("cmp_nvim_lsp")
@@ -177,8 +178,8 @@ return {
         end,
 
         ["ts_ls"] = function()
-          local lspconfig = require("lspconfig")
-          lspconfig.ts_ls.setup({
+          -- Use typescript-tools.nvim instead for better auto-import support
+          require("typescript-tools").setup({
             capabilities = capabilities,
             on_attach = function(client, bufnr)
               require("lsp_signature").on_attach({
@@ -189,28 +190,28 @@ return {
               }, bufnr)
             end,
             settings = {
-              typescript = {
-                inlayHints = {
-                  includeInlayParameterNameHints = "literal",
-                  includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                  includeInlayFunctionParameterTypeHints = true,
-                  includeInlayVariableTypeHints = false,
-                  includeInlayPropertyDeclarationTypeHints = true,
-                  includeInlayFunctionLikeReturnTypeHints = true,
-                  includeInlayEnumMemberValueHints = true,
-                },
+              separate_diagnostic_server = true,
+              publish_diagnostic_on = "insert_leave",
+              expose_as_code_action = "all",
+              tsserver_path = nil,
+              tsserver_plugins = {},
+              tsserver_max_memory = "auto",
+              tsserver_format_options = {},
+              tsserver_file_preferences = {
+                includeCompletionsForModuleExports = true,
+                includeCompletionsForImportStatements = true,
+                includeCompletionsWithSnippetText = true,
+                includeAutomaticOptionalChainCompletions = true,
               },
-              javascript = {
-                inlayHints = {
-                  includeInlayParameterNameHints = "all",
-                  includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                  includeInlayFunctionParameterTypeHints = true,
-                  includeInlayVariableTypeHints = true,
-                  includeInlayPropertyDeclarationTypeHints = true,
-                  includeInlayFunctionLikeReturnTypeHints = true,
-                  includeInlayEnumMemberValueHints = true,
-                },
-              },
+              tsserver_locale = "en",
+              complete_function_calls = true,
+              include_completions_with_insert_text = true,
+              code_lens = "off",
+              disable_member_code_lens = true,
+              jsx_close_tag = {
+                enable = false,
+                filetypes = { "javascriptreact", "typescriptreact" },
+              }
             },
           })
         end,
@@ -248,11 +249,19 @@ return {
 
     local cmp = require("cmp")
     local cmp_select = { behavior = cmp.SelectBehavior.Select }
+    local luasnip = require("luasnip")
+
+    -- Helper function to check if we can jump forward in snippet
+    local has_words_before = function()
+      unpack = unpack or table.unpack
+      local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+      return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+    end
 
     cmp.setup({
       snippet = {
         expand = function(args)
-          require("luasnip").lsp_expand(args.body)
+          luasnip.lsp_expand(args.body)
         end,
       },
       mapping = cmp.mapping.preset.insert({
@@ -263,6 +272,32 @@ return {
         ["<C-k>"] = cmp.mapping(function()
           vim.lsp.buf.signature_help()
         end, { "i", "c" }),
+        -- Tab completion with snippet support and auto-confirm
+        ["<Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            local entry = cmp.get_selected_entry()
+            if not entry then
+              cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+            end
+            cmp.confirm({ select = true })
+          elseif luasnip.expand_or_jumpable() then
+            luasnip.expand_or_jump()
+          elseif has_words_before() then
+            cmp.complete()
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
+        -- Shift-Tab for going back in snippets
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item(cmp_select)
+          elseif luasnip.jumpable(-1) then
+            luasnip.jump(-1)
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
       }),
       sources = cmp.config.sources({
         { name = "nvim_lsp" },
@@ -270,6 +305,19 @@ return {
       }, {
         { name = "buffer" },
       }),
+      -- Enhanced completion appearance
+      formatting = {
+        format = function(entry, vim_item)
+          -- Add source name
+          vim_item.menu = ({
+            nvim_lsp = "[LSP]",
+            luasnip = "[Snippet]",
+            buffer = "[Buffer]",
+            path = "[Path]",
+          })[entry.source.name]
+          return vim_item
+        end,
+      },
     })
 
     -- Enhanced diagnostics configuration
