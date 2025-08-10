@@ -153,6 +153,13 @@ A modern, feature-rich Neovim configuration focused on development productivity 
    - Lazy.nvim will automatically install all plugins
    - LSP servers will be installed via Mason on first use
    - Restart Neovim after initial setup
+     
+4. **KNOWN ISSUE**
+    -- run the below commands for telescope
+   ```bash
+    cd ~/.local/share/nvim/lazy/telescope-fzf-native.nvim
+    make
+   ```
 
 ## 🛠️ Customization
 
