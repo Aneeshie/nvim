@@ -22,6 +22,14 @@ require("config.autocmds")
 
 -- Setup lazy.nvim
 require("lazy").setup("plugins", {
-  checker = { enabled = true },
+  checker = { enabled = false }, -- Disable automatic plugin updates
   change_detection = { notify = false },
+  ui = {
+    border = "rounded",
+  },
 })
+
+-- Setup theme switcher after plugins are loaded
+vim.defer_fn(function()
+  require("config.theme-switcher").setup()
+end, 100)

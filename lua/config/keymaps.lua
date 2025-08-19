@@ -40,3 +40,13 @@ end, { desc = "Toggle comment" })
 keymap.set("v", "<leader>/", function()
   require("Comment.api").toggle.linewise(vim.fn.visualmode())
 end, { desc = "Toggle comment" })
+
+-- Theme switcher (unique combination: Ctrl+Alt+T)
+keymap.set("n", "<C-M-t>", function()
+  require("config.theme-switcher").cycle_theme()
+end, { desc = "Cycle through themes" })
+
+-- Show full error details (Ctrl+Alt+E)
+keymap.set("n", "<C-M-e>", function()
+  require("config.theme-switcher").show_last_error()
+end, { desc = "Show full error details" })
