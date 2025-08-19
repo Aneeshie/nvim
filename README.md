@@ -4,7 +4,7 @@ A modern, feature-rich Neovim configuration focused on development productivity 
 
 ## ✨ Features
 
-- **🎨 Beautiful UI**: Gruvbox colorscheme with hard contrast
+- **🎨 Beautiful UI**: Multi-theme support (Catppuccin, Gruvbox, Rose Pine) with theme switcher
 - **🔍 Fuzzy Finding**: Telescope with FZF integration for blazing fast file navigation
 - **🧠 Smart LSP**: Full Language Server Protocol support with auto-completion
 - **📁 File Management**: NvimTree for intuitive file exploration
@@ -79,6 +79,12 @@ A modern, feature-rich Neovim configuration focused on development productivity 
 | `<Ctrl-k>` | Go to upper window |
 | `<Ctrl-l>` | Go to right window |
 
+### Theme Management
+| Binding | Action |
+|---------|--------|
+| `<Ctrl-Alt-T>` | Cycle through themes (Catppuccin → Gruvbox → Rose Pine) |
+| `<Ctrl-Alt-E>` | Show full error details (for truncated error messages) |
+
 ### Auto-completion
 | Binding | Action |
 |---------|--------|
@@ -98,9 +104,10 @@ A modern, feature-rich Neovim configuration focused on development productivity 
     ├── config/
     │   ├── autocmds.lua       # Auto-commands
     │   ├── keymaps.lua        # Key mappings
-    │   └── options.lua        # Vim options and settings
+    │   ├── options.lua        # Vim options and settings
+    │   └── theme-switcher.lua # Theme switching functionality
     └── plugins/
-        ├── colorscheme.lua    # Gruvbox theme configuration
+        ├── colorscheme.lua    # Multi-theme configuration (Catppuccin, Gruvbox, Rose Pine)
         ├── completion.lua     # nvim-cmp setup
         ├── fileTree.lua       # NvimTree configuration
         ├── fuzzyFinder.lua    # Telescope setup
@@ -112,7 +119,12 @@ A modern, feature-rich Neovim configuration focused on development productivity 
 
 ## 🎨 Theme & Appearance
 
-- **Colorscheme**: Gruvbox (hard contrast) with custom italics
+- **Multi-Theme Support**: 
+  - **Catppuccin Macchiato** (default) - Warm, cozy theme
+  - **Gruvbox Hard** - High contrast retro theme  
+  - **Rose Pine** - Elegant, minimal theme
+- **Theme Switcher**: Press `Ctrl+Alt+T` to cycle between themes
+- **Smart Error Handling**: Truncated error messages with option to view full details
 - **Cursor**: Block cursor in all modes
 - **Line Numbers**: Relative line numbers enabled
 - **Color Column**: Set at 120 characters
@@ -151,6 +163,7 @@ A modern, feature-rich Neovim configuration focused on development productivity 
 3. **First Launch**: 
    - Open Neovim: `nvim`
    - Lazy.nvim will automatically install all plugins
+   - If themes aren't working, run `:Lazy sync` to install theme plugins
    - LSP servers will be installed via Mason on first use
    - Restart Neovim after initial setup
      
@@ -167,7 +180,7 @@ A modern, feature-rich Neovim configuration focused on development productivity 
 Edit `lua/plugins/lsp.lua` and add your desired language server to the `ensure_installed` table in the Mason setup.
 
 ### Changing Theme
-Modify `lua/plugins/colorscheme.lua` to use a different colorscheme or adjust Gruvbox settings.
+Use `Ctrl+Alt+T` to cycle between the three available themes, or modify `lua/plugins/colorscheme.lua` to add new themes or adjust existing theme settings.
 
 ### Custom Keybindings
 Add your custom keymaps to `lua/config/keymaps.lua` following the existing patterns.
@@ -213,7 +226,9 @@ Add your custom keymaps to `lua/config/keymaps.lua` following the existing patte
 | Plugin | Purpose | Key Features |
 |--------|---------|--------------|
 | **lazy.nvim** | Plugin Manager | Lazy loading, lockfile, auto-updates |
-| **gruvbox.nvim** | Color Scheme | Hard contrast, italic support |
+| **catppuccin** | Color Scheme | Warm, cozy theme with excellent integration |
+| **gruvbox.nvim** | Color Scheme | Hard contrast, retro feel |
+| **rose-pine** | Color Scheme | Elegant, minimal design |
 | **nvim-lspconfig** | LSP Client | Language server integration |
 | **mason.nvim** | LSP Installer | Automatic server management |
 | **nvim-cmp** | Completion | Smart auto-completion |
