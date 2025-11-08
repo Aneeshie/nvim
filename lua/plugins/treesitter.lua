@@ -14,6 +14,7 @@ return {
         "query",
         "javascript",
         "typescript",
+        "tsx",
         "html",
         "css",
         "json",
@@ -27,8 +28,15 @@ return {
         "markdown_inline",
       },
       sync_install = false,
-      highlight = { enable = true },
-      indent = { enable = true },
+      highlight = { 
+        enable = true,
+        additional_vim_regex_highlighting = false,
+      },
+      indent = { 
+        enable = true,
+        -- Disable for problematic languages, let LSP handle it
+        disable = {},
+      },
       autopairs = { enable = true },
     })
   end,

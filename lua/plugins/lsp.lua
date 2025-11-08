@@ -61,6 +61,8 @@ return {
         "gopls",
         "ts_ls", -- TypeScript
         "clangd", -- C/C++
+        "html", -- HTML
+        "emmet_ls", -- Emmet for HTML snippets
       },
       handlers = {
         function(server_name)
@@ -241,6 +243,36 @@ return {
               usePlaceholders = true,
               completeUnimported = true,
               clangdFileStatus = true,
+            },
+          })
+        end,
+
+        ["html"] = function()
+          local lspconfig = require("lspconfig")
+          lspconfig.html.setup({
+            capabilities = capabilities,
+            on_attach = function(client, bufnr)
+              require("lsp_signature").on_attach({
+                bind = true,
+                handler_opts = {
+                  border = "rounded"
+                }
+              }, bufnr)
+            end,
+          })
+        end,
+
+        ["emmet_ls"] = function()
+          local lspconfig = require("lspconfig")
+          lspconfig.emmet_ls.setup({
+            capabilities = capabilities,
+            filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte", "vue" },
+            init_options = {
+              html = {
+                options = {
+                  ["bem.enabled"] = true,
+                },
+              },
             },
           })
         end,

@@ -23,7 +23,28 @@ require("config.autocmds")
 -- Setup lazy.nvim
 require("lazy").setup("plugins", {
   checker = { enabled = false }, -- Disable automatic plugin updates
-  change_detection = { notify = false },
+  change_detection = { 
+    enabled = true,
+    notify = false, -- Don't notify on changes
+  },
+  performance = {
+    cache = {
+      enabled = true,
+    },
+    reset_packpath = true,
+    rtp = {
+      disabled_plugins = {
+        "gzip",
+        "matchit",
+        "matchparen",
+        "netrwPlugin",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
+      },
+    },
+  },
   ui = {
     border = "rounded",
   },

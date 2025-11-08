@@ -3,8 +3,10 @@ return {
   tag = "0.1.8",
   dependencies = {
     "nvim-lua/plenary.nvim",
-    "nvim-telescope/telescope-fzf-native.nvim",
-    build = "make",
+    {
+      "nvim-telescope/telescope-fzf-native.nvim",
+      build = "make",
+    },
   },
   config = function()
     require("telescope").setup({
@@ -30,7 +32,7 @@ return {
           preview_cutoff = 120,
         },
         file_sorter = require("telescope.sorters").get_fuzzy_file,
-        file_ignore_patterns = { "node_modules", ".git", "target", "build" },
+        file_ignore_patterns = { "node_modules/", ".git/", "target/", "build/", "dist/", ".cache/" },
         generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
         path_display = { "truncate" },
         winblend = 0,
@@ -48,7 +50,9 @@ return {
     require("telescope").load_extension("fzf")
 
     local builtin = require("telescope.builtin")
-    vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
+    vim.keymap.set("n", "<leader>ff", function()
+      builtin.find_files({ hidden = true, no_ignore = false })
+    end, { desc = "Find files" })
     vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Live grep" })
     vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Find buffers" })
     vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Help tags" })

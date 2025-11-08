@@ -32,10 +32,9 @@ return {
       lua = { "stylua" },
       python = { "isort", "black" },
     },
-    format_on_save = {
-      timeout_ms = 500,
-      lsp_fallback = true,
-    },
+    -- Disable format-on-save for snappier performance
+    -- Use <leader>f or = to format manually
+    format_on_save = nil,
     formatters = {
       prettier = {
         prepend_args = { "--prose-wrap", "always" },

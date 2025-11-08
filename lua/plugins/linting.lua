@@ -39,16 +39,8 @@ return {
     if next(linters_by_ft) ~= nil then
       local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
 
-      vim.api.nvim_create_autocmd({ "BufWritePost", "InsertLeave" }, {
-        group = lint_augroup,
-        callback = function()
-          -- Only lint if there are linters for this filetype
-          local ft = vim.bo.filetype
-          if linters_by_ft[ft] then
-            lint.try_lint()
-          end
-        end,
-      })
+      -- Disabled auto-linting on save for performance
+      -- Use <leader>l to manually trigger linting
 
       vim.keymap.set("n", "<leader>l", function()
         local ft = vim.bo.filetype

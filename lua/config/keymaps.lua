@@ -23,6 +23,14 @@ keymap.set("v", "p", '"_dP', { desc = "Paste without yanking" })
 -- Clear search highlighting
 keymap.set("n", "<leader>h", "<cmd>nohlsearch<CR>", { desc = "Clear search highlighting" })
 
+-- Fast save and quit
+keymap.set("n", "<leader>w", "<cmd>w<CR>", { desc = "Save file" })
+keymap.set("n", "<leader>q", "<cmd>q<CR>", { desc = "Quit" })
+
+-- Format with = in visual mode (built-in indent)
+-- Format entire file with gg=G
+-- Format with <leader>f for prettier/conform
+
 -- LSP keymaps (will be set in lsp.lua)
 keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
 keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover documentation" })
