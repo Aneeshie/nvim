@@ -80,10 +80,11 @@ A modern, feature-rich Neovim configuration focused on development productivity 
 | `<Ctrl-l>` | Go to right window |
 
 ### Theme Management
-| Binding | Action |
-|---------|--------|
-| `<Ctrl-Alt-T>` | Cycle through themes (Catppuccin → Gruvbox → Rose Pine) |
-| `<Ctrl-Alt-E>` | Show full error details (for truncated error messages) |
+|| Binding | Action |
+||---------|--------|
+|| `<Ctrl-Alt-T>` | Cycle through themes (Catppuccin → Gruvbox → Rose Pine) |
+|| `<leader>tb` | Toggle background transparency |
+|| `<Ctrl-Alt-E>` | Show full error details (for truncated error messages) |
 
 ### Auto-completion
 | Binding | Action |
@@ -124,6 +125,7 @@ A modern, feature-rich Neovim configuration focused on development productivity 
   - **Gruvbox Hard** - High contrast retro theme  
   - **Rose Pine** - Elegant, minimal theme
 - **Theme Switcher**: Press `Ctrl+Alt+T` to cycle between themes
+- **Background Transparency Toggle**: Press `<leader>tb` to toggle background transparency
 - **Smart Error Handling**: Truncated error messages with option to view full details
 - **Cursor**: Block cursor in all modes
 - **Line Numbers**: Relative line numbers enabled

@@ -97,6 +97,41 @@ function M.set_theme(theme_name)
 	end
 end
 
+-- Toggle background transparency
+local transparent_enabled = false
+
+local function apply_transparency()
+	if transparent_enabled then
+		-- Make main UI groups transparent so the terminal background shows through
+		vim.cmd([[highlight Normal guibg=NONE ctermbg=NONE]])
+		vim.cmd([[highlight NormalNC guibg=NONE ctermbg=NONE]])
+		vim.cmd([[highlight SignColumn guibg=NONE ctermbg=NONE]])
+		vim.cmd([[highlight LineNr guibg=NONE ctermbg=NONE]])
+		vim.cmd([[highlight StatusLine guibg=NONE ctermbg=NONE]])
+		vim.cmd([[highlight StatusLineNC guibg=NONE ctermbg=NONE]])
+		vim.cmd([[highlight EndOfBuffer guibg=NONE ctermbg=NONE]])
+		vim.notify("Background transparency: ON", vim.log.levels.INFO, {
+			title = "UI",
+			timeout = 1200,
+		})
+	else
+		-- Re-apply the current colorscheme to restore default backgrounds
+		local current = vim.g.colors_name or "catppuccin"
+		pcall(function()
+			vim.cmd.colorscheme(current)
+		end)
+		vim.notify("Background transparency: OFF", vim.log.levels.INFO, {
+			title = "UI",
+			timeout = 1200,
+		})
+	end
+end
+
+function M.toggle_transparency()
+	transparent_enabled = not transparent_enabled
+	apply_transparency()
+end
+
 -- Show full error details
 function M.show_last_error()
 	if last_error then

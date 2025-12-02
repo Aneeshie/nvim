@@ -54,6 +54,11 @@ keymap.set("n", "<C-M-t>", function()
   require("config.theme-switcher").cycle_theme()
 end, { desc = "Cycle through themes" })
 
+-- Toggle background transparency (<leader>tb)
+keymap.set("n", "<leader>tb", function()
+  require("config.theme-switcher").toggle_transparency()
+end, { desc = "Toggle background transparency" })
+
 -- Show full error details (Ctrl+Alt+E)
 keymap.set("n", "<C-M-e>", function()
   require("config.theme-switcher").show_last_error()
