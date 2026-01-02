@@ -5,7 +5,35 @@ M.themes = {
 	"catppuccin",
 	"gruvbox",
 	"rose-pine",
+	"tokyonight",
 }
+
+-- Persistence file path
+local data_path = vim.fn.stdpath("data") .. "/theme_settings.json"
+
+-- Load saved settings from file
+local function load_settings()
+	local file = io.open(data_path, "r")
+	if file then
+		local content = file:read("*all")
+		file:close()
+		local success, settings = pcall(vim.json.decode, content)
+		if success and settings then
+			return settings
+		end
+	end
+	return { theme = "catppuccin", transparent = false }
+end
+
+-- Save settings to file
+local function save_settings(settings)
+	local file = io.open(data_path, "w")
+	if file then
+		local content = vim.json.encode(settings)
+		file:write(content)
+		file:close()
+	end
+end
 
 -- Store last error for full display
 local last_error = nil
@@ -64,11 +92,17 @@ local function set_theme(theme_name)
 		return false
 	end
 	
+	-- Save the theme setting
+	local settings = load_settings()
+	settings.theme = theme_name
+	save_settings(settings)
+	
 	-- Show notification with current theme
 	local theme_display = {
 		["catppuccin"] = "Catppuccin Macchiato",
 		["gruvbox"] = "Gruvbox Hard",
 		["rose-pine"] = "Rose Pine",
+		["tokyonight"] = "Tokyo Night",
 	}
 	
 	vim.notify("󰏘 " .. (theme_display[theme_name] or theme_name), vim.log.levels.INFO, {
@@ -98,7 +132,7 @@ function M.set_theme(theme_name)
 end
 
 -- Toggle background transparency
-local transparent_enabled = false
+local transparent_enabled = load_settings().transparent or false
 
 local function apply_transparency()
 	if transparent_enabled then
@@ -130,6 +164,11 @@ end
 function M.toggle_transparency()
 	transparent_enabled = not transparent_enabled
 	apply_transparency()
+	
+	-- Save transparency setting
+	local settings = load_settings()
+	settings.transparent = transparent_enabled
+	save_settings(settings)
 end
 
 -- Show full error details
@@ -149,11 +188,19 @@ end
 
 -- Initialize with default theme
 function M.setup()
-	-- Try to set a working theme
-	local fallback_themes = { "catppuccin", "default", "habamax" }
+	-- Load saved settings
+	local settings = load_settings()
+	transparent_enabled = settings.transparent or false
+	
+	-- Try to set the saved theme first, then fallback
+	local fallback_themes = { settings.theme, "catppuccin", "default", "habamax" }
 	
 	for _, theme in ipairs(fallback_themes) do
-		if set_theme(theme) then
+		if theme and set_theme(theme) then
+			-- Apply transparency if it was enabled
+			if transparent_enabled then
+				apply_transparency()
+			end
 			break
 		end
 	end
