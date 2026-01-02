@@ -60,7 +60,6 @@ return {
         "rust_analyzer",
         "gopls",
         "ts_ls", -- TypeScript
-        "clangd", -- C/C++
         "html", -- HTML
         "emmet_ls", -- Emmet for HTML snippets
       },
@@ -214,35 +213,6 @@ return {
                 enable = false,
                 filetypes = { "javascriptreact", "typescriptreact" },
               }
-            },
-          })
-        end,
-
-        ["clangd"] = function()
-          local lspconfig = require("lspconfig")
-          lspconfig.clangd.setup({
-            capabilities = capabilities,
-            on_attach = function(client, bufnr)
-              require("lsp_signature").on_attach({
-                bind = true,
-                handler_opts = {
-                  border = "rounded"
-                }
-              }, bufnr)
-            end,
-            cmd = {
-              "clangd",
-              "--background-index",
-              "--clang-tidy",
-              "--header-insertion=iwyu",
-              "--completion-style=detailed",
-              "--function-arg-placeholders",
-              "--fallback-style=llvm",
-            },
-            init_options = {
-              usePlaceholders = true,
-              completeUnimported = true,
-              clangdFileStatus = true,
             },
           })
         end,
