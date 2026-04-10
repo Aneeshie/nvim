@@ -1,7 +1,7 @@
 local keymap = vim.keymap
 
--- File tree toggle
-keymap.set("n", "<leader>cd", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle file tree" })
+-- File tree toggle (using oil.nvim)
+keymap.set("n", "<leader>cd", "<cmd>Oil<CR>", { desc = "Open parent directory" })
 
 -- Better window navigation
 keymap.set("n", "<C-h>", "<C-w>h", { desc = "Go to left window" })
