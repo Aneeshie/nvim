@@ -26,32 +26,21 @@ return {
     require("fidget").setup({})
     require("mason").setup()
     
-    -- Setup signature help plugin
+    -- Setup signature help plugin (simplified)
     require("lsp_signature").setup({
-      bind = true, -- This is mandatory, otherwise border config won't get registered.
-      handler_opts = {
-        border = "rounded"
-      },
-      floating_window = true, -- show hint in a floating window, set to false for virtual text only
-      floating_window_above_cur_line = true, -- try to place the floating above the current line when possible Note:
-      fix_pos = false, -- set to true, the floating window will not auto-close until finish all parameters
-      hint_enable = true, -- virtual hint enable
-      hint_prefix = "🐼 ", -- Panda for parameter
-      hint_scheme = "String",
-      hi_parameter = "LspSignatureActiveParameter", -- how your parameter will be highlight
-      max_height = 12, -- max height of signature floating_window, if content is more than max_height, you can scroll down
-      max_width = 80, -- max_width of signature floating_window
-      transpancy = nil, -- disabled by default, allow floating window to be transparent
-      extra_trigger_chars = {}, -- Array of extra characters that will trigger signature completion, e.g., {"(", ","}
-      zindex = 200, -- by default it will be on top of all floating windows, set to <= 50 send it to bottom
-      debug = false, -- set to true to enable debug logging
-      log_path = vim.fn.stdpath("cache") .. "/lsp_signature.log", -- log dir when debug is on
-      padding = '', -- character to pad on left and right of signature can be ' ', or '|'  etc
-      shadow_blend = 36, -- if you using shadow as border use this set the opacity
-      shadow_guibg = 'Black', -- if you using shadow as border use this set the color e.g. 'Green' or '#121315'
-      timer_interval = 200, -- default timer check interval set to lower value if you want to reduce latency
-      toggle_key = nil, -- toggle signature on and off in insert mode, e.g. '<M-x>'
-      select_signature_key = nil, -- cycle to next signature, e.g. '<M-n>' function overloading
+      bind = true,
+      handler_opts = { border = "rounded" },
+      hint_enable = false, -- Disable inline virtual text, rely on native inlay hints
+    })
+
+    -- Enable native inlay hints for LSP servers that support it
+    vim.api.nvim_create_autocmd("LspAttach", {
+      callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if client and client.server_capabilities.inlayHintProvider then
+          vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+        end
+      end,
     })
     
     require("mason-lspconfig").setup({
