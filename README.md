@@ -1,23 +1,23 @@
 # My Neovim Configuration
 
-A modern, feature-rich Neovim configuration focused on development productivity with excellent LSP support, fuzzy finding, and intuitive keybindings.
+A modern, streamlined Neovim 0.10+ configuration focused on development productivity with excellent native LSP support, fuzzy finding, and fluid file management.
 
 ## ✨ Features
 
-- **🎨 Beautiful UI**: Multi-theme support (Catppuccin, Gruvbox, Rose Pine) with theme switcher
+- **🎨 Beautiful UI**: Native support for Aura Dark theme with a clean, distraction-free aesthetic
+- **📁 File Management**: Edit your filesystem like a standard Neovim buffer using `oil.nvim`
+- **🧠 Smart LSP**: Native Language Server Protocol support with native inlay hints and auto-completion
 - **🔍 Fuzzy Finding**: Telescope with FZF integration for blazing fast file navigation
-- **🧠 Smart LSP**: Full Language Server Protocol support with auto-completion
-- **📁 File Management**: NvimTree for intuitive file exploration
 - **🎯 Quick Navigation**: Harpoon for lightning-fast file switching
-- **🎭 Syntax Highlighting**: Treesitter for advanced syntax highlighting
+- **🎭 Syntax Highlighting**: Treesitter for advanced syntax parsing
 - **🔧 Code Quality**: Integrated linting and formatting
-- **⚡ Performance**: Lazy loading with lazy.nvim for fast startup times
+- **⚡ Performance**: Lazy loading with `lazy.nvim`, taking full advantage of modern Neovim default options without legacy bloat
 
 ## 📦 Included Language Servers
 
 - **Lua** (`lua_ls`) - Neovim configuration and Lua development
 - **Rust** (`rust_analyzer`) - Full Rust support with Clippy integration
-- **Go** (`gopls`) - Complete Go development environment with inlay hints
+- **Go** (`gopls`) - Complete Go development environment
 - **TypeScript/JavaScript** (`ts_ls`) - Modern web development
 - **C/C++** (`clangd`) - System programming with advanced features
 
@@ -30,13 +30,12 @@ A modern, feature-rich Neovim configuration focused on development productivity 
 ### File Navigation
 | Binding | Action |
 |---------|--------|
-| `<leader>cd` | Toggle file tree (NvimTree) |
+| `-` | Open parent directory (`oil.nvim`) |
+| `<leader>cd` | Open file tree (`oil.nvim`) |
 | `<leader>ff` | Find files (Telescope) |
 | `<leader>fg` | Live grep (Telescope) |
 | `<leader>fb` | Find buffers (Telescope) |
 | `<leader>fr` | Recent files (Telescope) |
-| `<leader>fh` | Help tags (Telescope) |
-| `<leader>fs` | Grep string under cursor (Telescope) |
 
 ### Harpoon (Quick File Switching)
 | Binding | Action |
@@ -45,8 +44,6 @@ A modern, feature-rich Neovim configuration focused on development productivity 
 | `<Ctrl-e>` | Toggle Harpoon quick menu |
 | `<Ctrl-h>` | Jump to Harpoon file 1 |
 | `<Ctrl-t>` | Jump to Harpoon file 2 |
-| `<Ctrl-n>` | Jump to Harpoon file 3 |
-| `<Ctrl-s>` | Jump to Harpoon file 4 |
 
 ### LSP & Code Navigation
 | Binding | Action |
@@ -63,12 +60,11 @@ A modern, feature-rich Neovim configuration focused on development productivity 
 ### Code Editing
 | Binding | Action |
 |---------|--------|
-| `<leader>/` | Toggle comment (line/visual) |
+| `gcc` (normal) | Toggle comment |
+| `gc` (visual) | Toggle block comment |
 | `<leader>h` | Clear search highlighting |
 | `J` (visual) | Move selection down |
 | `K` (visual) | Move selection up |
-| `<` (visual) | Indent left (stay in visual) |
-| `>` (visual) | Indent right (stay in visual) |
 | `p` (visual) | Paste without yanking |
 
 ### Window Navigation
@@ -79,13 +75,6 @@ A modern, feature-rich Neovim configuration focused on development productivity 
 | `<Ctrl-k>` | Go to upper window |
 | `<Ctrl-l>` | Go to right window |
 
-### Theme Management
-|| Binding | Action |
-||---------|--------|
-|| `<Ctrl-Alt-T>` | Cycle through themes (Catppuccin → Gruvbox → Rose Pine) |
-|| `<leader>tb` | Toggle background transparency |
-|| `<Ctrl-Alt-E>` | Show full error details (for truncated error messages) |
-
 ### Auto-completion
 | Binding | Action |
 |---------|--------|
@@ -93,7 +82,6 @@ A modern, feature-rich Neovim configuration focused on development productivity 
 | `<Ctrl-n>` | Next completion item |
 | `<Ctrl-y>` | Confirm completion |
 | `<Ctrl-Space>` | Trigger completion |
-| `<Ctrl-k>` | Show signature help |
 
 ## 🔧 Configuration Structure
 
@@ -105,138 +93,63 @@ A modern, feature-rich Neovim configuration focused on development productivity 
     ├── config/
     │   ├── autocmds.lua       # Auto-commands
     │   ├── keymaps.lua        # Key mappings
-    │   ├── options.lua        # Vim options and settings
-    │   └── theme-switcher.lua # Theme switching functionality
+    │   └── options.lua        # Vim options and settings
     └── plugins/
-        ├── colorscheme.lua    # Multi-theme configuration (Catppuccin, Gruvbox, Rose Pine)
+        ├── colorscheme.lua    # Theme configuration (Aura, Catppuccin)
         ├── completion.lua     # nvim-cmp setup
-        ├── fileTree.lua       # NvimTree configuration
+        ├── oil.lua            # oil.nvim configuration
         ├── fuzzyFinder.lua    # Telescope setup
         ├── harpoon.lua        # Harpoon quick navigation
         ├── linting.lua        # nvim-lint configuration
-        ├── lsp.lua           # Language server configuration
+        ├── lsp.lua           # Language server config with native inlay hints
         └── treesitter.lua     # Syntax highlighting
 ```
 
 ## 🎨 Theme & Appearance
 
-- **Multi-Theme Support**: 
-  - **Catppuccin Macchiato** (default) - Warm, cozy theme
-  - **Gruvbox Hard** - High contrast retro theme  
-  - **Rose Pine** - Elegant, minimal theme
-- **Theme Switcher**: Press `Ctrl+Alt+T` to cycle between themes
-- **Background Transparency Toggle**: Press `<leader>tb` to toggle background transparency
-- **Smart Error Handling**: Truncated error messages with option to view full details
-- **Cursor**: Block cursor in all modes
-- **Line Numbers**: Relative line numbers enabled
-- **Color Column**: Set at 120 characters
-- **Scroll Offset**: 8 lines of context
-- **Sign Column**: Always visible for LSP diagnostics
+- **Aura Dark**: Set as the default gorgeous cinematic theme.
+- **Catppuccin Macchiato**: A warm, cozy fallback theme.
+- **Clean Defaults**: Removed unnecessary legacy background transparency wrappers for raw Neovim speed.
+- **Cursor**: Block cursor across all modes for consistency.
+- **Sign Column**: Always visible for LSP diagnostics without gutter popping.
 
 ## 📝 Editor Settings
 
-- **Indentation**: 4 spaces (expandtab)
-- **Smart Indent**: Enabled for automatic indentation
-- **No Wrap**: Long lines don't wrap
-- **No Swap Files**: Disabled for cleaner workspace
-- **Persistent Undo**: Undo history saved to `~/.vim/undodir`
-- **Incremental Search**: Real-time search highlighting
-- **System Clipboard**: Integrated with `unnamedplus`
+- **Modern Standards**: Fully updated for Neovim 0.10+ (relying on native `termguicolors`, built-in comments, native inlay hints).
+- **Indentation**: 2 spaces (expandtab) by default, standard across web/config editing. 
+- **Persistent Undo**: Undo history is gracefully mapped.
+- **Incremental Search**: Real-time search highlighting enabled natively.
 
 ## 🚀 Getting Started
 
 1. **Prerequisites**: 
-   - Neovim 0.8+ 
+   - Neovim 0.10+ (Crucial for native features like `gcc` comments and native inlay hints)
    - Git
    - A Nerd Font for icons
    - ripgrep (for Telescope live_grep)
-   - Node.js (for some LSP servers)
 
 2. **Installation**: 
    ```bash
-   # If using with dotfiles (as configured)
-   git clone git@github.com:Aneeshie/nvim.git ~/.dotfiles
-   ln -sf ~/.dotfiles/nvim/.config/nvim ~/.config/nvim
-   
-   # Or directly
    git clone git@github.com:Aneeshie/nvim.git ~/.config/nvim
    ```
 
 3. **First Launch**: 
    - Open Neovim: `nvim`
    - Lazy.nvim will automatically install all plugins
-   - If themes aren't working, run `:Lazy sync` to install theme plugins
-   - LSP servers will be installed via Mason on first use
-   - Restart Neovim after initial setup
-     
-4. **KNOWN ISSUE**
-    -- run the below commands for telescope
-   ```bash
-    cd ~/.local/share/nvim/lazy/telescope-fzf-native.nvim
-    make
-   ```
-
-## 🛠️ Customization
-
-### Adding New LSP Servers
-Edit `lua/plugins/lsp.lua` and add your desired language server to the `ensure_installed` table in the Mason setup.
-
-### Changing Theme
-Use `Ctrl+Alt+T` to cycle between the three available themes, or modify `lua/plugins/colorscheme.lua` to add new themes or adjust existing theme settings.
-
-### Custom Keybindings
-Add your custom keymaps to `lua/config/keymaps.lua` following the existing patterns.
-
-## 🎯 LSP Features
-
-### Signature Help
-- **Visual Indicator**: 🐼 emoji for parameters
-- **Floating Windows**: Rounded borders for clean appearance
-- **Auto-trigger**: Intelligent signature help in insert mode
-
-### Diagnostics
-- **Custom Icons**: Beautiful diagnostic symbols
-- **Floating Details**: Detailed error information on hover
-- **Severity Sorting**: Errors prioritized over warnings
-
-### Language-Specific Features
-
-#### Rust
-- Clippy integration for enhanced linting
-- All Cargo features enabled
-- Advanced error checking
-
-#### Go  
-- gofumpt formatting
-- Comprehensive code lenses
-- Type hints and analysis
-- Static checking with various analyzers
-
-#### TypeScript/JavaScript
-- Inlay hints for parameters and types
-- Advanced type information
-- Modern JS/TS support
-
-#### C/C++
-- Clang-tidy integration
-- IWYU header insertion
-- Detailed completion
-- LLVM fallback style
+   - LSP servers will be installed via Mason automatically
 
 ## 📊 Plugin Overview
 
 | Plugin | Purpose | Key Features |
 |--------|---------|--------------|
-| **lazy.nvim** | Plugin Manager | Lazy loading, lockfile, auto-updates |
-| **catppuccin** | Color Scheme | Warm, cozy theme with excellent integration |
-| **gruvbox.nvim** | Color Scheme | Hard contrast, retro feel |
-| **rose-pine** | Color Scheme | Elegant, minimal design |
+| **lazy.nvim** | Plugin Manager | Lazy loading, lockfile, fast startup |
+| **aura-theme** | Color Scheme | Stunning, cinematic dark theme |
+| **oil.nvim** | File Explorer | Manage your filesystem like a Neovim buffer |
 | **nvim-lspconfig** | LSP Client | Language server integration |
-| **mason.nvim** | LSP Installer | Automatic server management |
-| **nvim-cmp** | Completion | Smart auto-completion |
-| **telescope.nvim** | Fuzzy Finder | File/text search with preview |
-| **nvim-tree.lua** | File Explorer | Sidebar file management |
-| **harpoon** | Quick Navigation | Bookmark and switch files |
-| **nvim-treesitter** | Syntax Highlighting | Advanced parsing |
-| **nvim-lint** | Linting | Code quality checking |
+| **mason.nvim** | Server Management | Automatic LSP/Formatter installer |
+| **nvim-cmp** | Completion | Smart completion |
+| **telescope.nvim**| Fuzzy Finder | File finding and grepping |
+| **harpoon** | Quick Navigation | Instant file switching |
+| **nvim-treesitter**| Syntax Parser | Advanced parsing and syntax highlighting |
+| **conform.nvim** | Formatting | Reliable document formatting |
 
