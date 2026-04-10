@@ -50,7 +50,3 @@ require("lazy").setup("plugins", {
   },
 })
 
--- Setup theme switcher after plugins are loaded
-vim.defer_fn(function()
-  require("config.theme-switcher").setup()
-end, 100)

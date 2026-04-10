@@ -41,25 +41,7 @@ keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show line diag
 keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
 keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
 
--- Multiline comments
-keymap.set("n", "<leader>/", function()
-  require("Comment.api").toggle.linewise.current()
-end, { desc = "Toggle comment" })
-keymap.set("v", "<leader>/", function()
-  require("Comment.api").toggle.linewise(vim.fn.visualmode())
-end, { desc = "Toggle comment" })
+-- Comments (Native in Neovim 0.10+)
+keymap.set("n", "<leader>/", "gcc", { desc = "Toggle comment", remap = true })
+keymap.set("v", "<leader>/", "gc", { desc = "Toggle comment", remap = true })
 
--- Theme switcher (unique combination: Ctrl+Alt+T)
-keymap.set("n", "<C-M-t>", function()
-  require("config.theme-switcher").cycle_theme()
-end, { desc = "Cycle through themes" })
-
--- Toggle background transparency (<leader>tb)
-keymap.set("n", "<leader>tb", function()
-  require("config.theme-switcher").toggle_transparency()
-end, { desc = "Toggle background transparency" })
-
--- Show full error details (Ctrl+Alt+E)
-keymap.set("n", "<C-M-e>", function()
-  require("config.theme-switcher").show_last_error()
-end, { desc = "Show full error details" })
