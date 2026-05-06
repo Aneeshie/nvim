@@ -1,13 +1,21 @@
 return {
-  -- Aura theme
+  -- Cursor Dark Theme
   {
-    "balion/aura-theme",
+    "ydkulks/cursor-dark.nvim",
     priority = 1000,
-    config = function(plugin)
-      -- Let the plugin load, then set colorscheme
-      vim.opt.termguicolors = true
-      -- Aura has variants: aura-dark, aura-dark-soft
-      vim.cmd.colorscheme("aura-dark")
+    config = function()
+      local transparency = require("config.transparency")
+
+      transparency.setup_autocmd()
+
+      require("cursor-dark").setup({
+        style = "dark-midnight", -- Options: "dark", "dark-midnight"
+        transparent = false,
+      })
+
+      vim.cmd.colorscheme("cursor-dark")
+      transparency.load()
+      transparency.apply()
     end,
   },
   -- Catppuccin theme (fallback)
@@ -16,6 +24,8 @@ return {
     name = "catppuccin",
     priority = 900,
     config = function()
+      local transparency = require("config.transparency")
+
       require("catppuccin").setup({
         flavour = "macchiato",
         transparent_background = false,
