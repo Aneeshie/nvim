@@ -23,6 +23,11 @@ keymap.set("v", "p", '"_dP', { desc = "Paste without yanking" })
 -- Clear search highlighting
 keymap.set("n", "<leader>h", "<cmd>nohlsearch<CR>", { desc = "Clear search highlighting" })
 
+-- Toggle UI transparency
+keymap.set("n", "<leader>ut", function()
+  require("config.transparency").toggle()
+end, { desc = "Toggle transparency" })
+
 -- Fast save and quit
 keymap.set("n", "<leader>w", "<cmd>w<CR>", { desc = "Save file" })
 keymap.set("n", "<leader>q", "<cmd>q<CR>", { desc = "Quit" })
@@ -44,4 +49,3 @@ keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
 -- Comments (Native in Neovim 0.10+)
 keymap.set("n", "<leader>/", "gcc", { desc = "Toggle comment", remap = true })
 keymap.set("v", "<leader>/", "gc", { desc = "Toggle comment", remap = true })
-

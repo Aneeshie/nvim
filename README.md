@@ -1,10 +1,10 @@
 # My Neovim Configuration
 
-A modern, streamlined Neovim 0.10+ configuration focused on development productivity with excellent native LSP support, fuzzy finding, and fluid file management.
+A modern, streamlined Neovim 0.12+ configuration focused on development productivity with excellent native LSP support, fuzzy finding, and fluid file management.
 
 ## ✨ Features
 
-- **🎨 Beautiful UI**: Native support for Aura Dark theme with a clean, distraction-free aesthetic
+- **🎨 Beautiful UI**: Cursor Dark with a clean, distraction-free aesthetic and persistent transparency toggle
 - **📁 File Management**: Edit your filesystem like a standard Neovim buffer using `oil.nvim`
 - **🧠 Smart LSP**: Native Language Server Protocol support with native inlay hints and auto-completion
 - **🔍 Fuzzy Finding**: Telescope with FZF integration for blazing fast file navigation
@@ -63,6 +63,7 @@ A modern, streamlined Neovim 0.10+ configuration focused on development producti
 | `gcc` (normal) | Toggle comment |
 | `gc` (visual) | Toggle block comment |
 | `<leader>h` | Clear search highlighting |
+| `<leader>ut` | Toggle transparent background |
 | `J` (visual) | Move selection down |
 | `K` (visual) | Move selection up |
 | `p` (visual) | Paste without yanking |
@@ -93,9 +94,10 @@ A modern, streamlined Neovim 0.10+ configuration focused on development producti
     ├── config/
     │   ├── autocmds.lua       # Auto-commands
     │   ├── keymaps.lua        # Key mappings
-    │   └── options.lua        # Vim options and settings
+    │   ├── options.lua        # Vim options and settings
+    │   └── transparency.lua   # Persistent transparency state
     └── plugins/
-        ├── colorscheme.lua    # Theme configuration (Aura, Catppuccin)
+        ├── colorscheme.lua    # Theme configuration (Cursor Dark, Catppuccin)
         ├── completion.lua     # nvim-cmp setup
         ├── oil.lua            # oil.nvim configuration
         ├── fuzzyFinder.lua    # Telescope setup
@@ -107,9 +109,9 @@ A modern, streamlined Neovim 0.10+ configuration focused on development producti
 
 ## 🎨 Theme & Appearance
 
-- **Aura Dark**: Set as the default gorgeous cinematic theme.
+- **Cursor Dark**: Set as the default focused dark theme.
 - **Catppuccin Macchiato**: A warm, cozy fallback theme.
-- **Clean Defaults**: Removed unnecessary legacy background transparency wrappers for raw Neovim speed.
+- **Persistent Transparency**: Toggle with `<leader>ut`; the state is saved under Neovim's state directory and restored on startup.
 - **Cursor**: Block cursor across all modes for consistency.
 - **Sign Column**: Always visible for LSP diagnostics without gutter popping.
 
@@ -123,8 +125,9 @@ A modern, streamlined Neovim 0.10+ configuration focused on development producti
 ## 🚀 Getting Started
 
 1. **Prerequisites**: 
-   - Neovim 0.10+ (Crucial for native features like `gcc` comments and native inlay hints)
+   - Neovim 0.12+
    - Git
+   - tree-sitter CLI 0.26.1+ (for nvim-treesitter parser installs)
    - A Nerd Font for icons
    - ripgrep (for Telescope live_grep)
 
@@ -143,7 +146,7 @@ A modern, streamlined Neovim 0.10+ configuration focused on development producti
 | Plugin | Purpose | Key Features |
 |--------|---------|--------------|
 | **lazy.nvim** | Plugin Manager | Lazy loading, lockfile, fast startup |
-| **aura-theme** | Color Scheme | Stunning, cinematic dark theme |
+| **cursor-dark.nvim** | Color Scheme | Focused dark theme |
 | **oil.nvim** | File Explorer | Manage your filesystem like a Neovim buffer |
 | **nvim-lspconfig** | LSP Client | Language server integration |
 | **mason.nvim** | Server Management | Automatic LSP/Formatter installer |
@@ -152,4 +155,3 @@ A modern, streamlined Neovim 0.10+ configuration focused on development producti
 | **harpoon** | Quick Navigation | Instant file switching |
 | **nvim-treesitter**| Syntax Parser | Advanced parsing and syntax highlighting |
 | **conform.nvim** | Formatting | Reliable document formatting |
-
